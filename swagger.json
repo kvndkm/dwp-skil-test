@@ -1,0 +1,67 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "DWP skill test on REST API",
+    "description": "This is skill test api on RESTful Services",
+    "contact": {
+      "name": "Krishna Kunderu",
+      "email": "kunderu0204@gmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [{
+    "url": "http://localhost:3000"
+  }],
+  "tags": [{
+    "name": "usersInRadius",
+    "description": "Users living in given city or around 50 miles"
+  }],
+  "paths": {
+    "/city/{city}/radius/{radius}": {
+      "get": {
+        "tags": [
+          "usersInRadius"
+        ],
+        "summary": "Users living in given city or around 50 miles",
+        "description": "Gets users as JSON array",
+        "operationId": "usersInRadius",
+        "parameters": [{
+            "name": "city",
+            "in": "path",
+            "description": "Users living in the provided city",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "radius",
+            "in": "path",
+            "description": "Find users who are located in the given radius(in miles) around the given city",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {}
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "content": {}
+          }
+        }
+      }
+    }
+  }
+}
