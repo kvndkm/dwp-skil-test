@@ -6,7 +6,7 @@
   "main": "./src/main/app.js",
   "scripts": {
     "test": "mocha ./src/test/*-test.js",
-    "start": "node ./dist/app.js"
+    "start": "node ./src/main/app.js"
   },
   "keywords": [],
   "author": "Krishna KUnder",
