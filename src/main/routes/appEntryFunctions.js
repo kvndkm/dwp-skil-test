@@ -30,8 +30,8 @@ export const getUsers = async (req, res) => {
     let replaceCriteria = `miles from ${req.params.city}`;
     usersInRadius.sort(
       (a, b) =>
-      parseFloat(a[0].distance.replace(replaceCriteria, "")) -
-      parseFloat(b[0].distance.replace(replaceCriteria, ""))
+      parseFloat(a.distance.replace(replaceCriteria, "")) -
+      parseFloat(b.distance.replace(replaceCriteria, ""))
     );
     console.log(
       `Number of matched users within radius of ${req.params.radius} miles or living in ${req.params.city} city: ${usersInRadius.length}`

@@ -37,7 +37,7 @@ export default class UsersLocationService {
         let cityBasedUsers = await this.getCityBasedUsers(city);
         console.log(`Total number of users: ${allUsers.body.length}`);
         /** Map on All Users with related city coordinates */
-        return allUsers.body.map(au => {
+        return allUsers.body.filter(au => {
             let cityCoord = {
                 latitude: au.latitude,
                 longitude: au.longitude
@@ -46,7 +46,7 @@ export default class UsersLocationService {
             /** filter users calculating distance between above coordinates fetched 
              * and city based coordinates with in the given radius 
              */
-            return cityBasedUsers.body.filter(cbu => {
+            let cbuFilteredUsers = cityBasedUsers.body.filter(cbu => {
                 let distance = geoLocationDetails.distanceBetween(cityCoord, {
                     latitude: cbu.latitude,
                     longitude: cbu.longitude,
@@ -55,14 +55,23 @@ export default class UsersLocationService {
                  * is with in the radius of given city limits 
                  */
                 if (distance <= radius) {
-                    var o = Object.assign({}, cbu);
-                    o.distance = `${distance} miles from ${city}`;
-                    cbu = Object.assign(cbu, o);
+                    cbu = this.updateDistanceInUser(cbu, distance, city);
                 }
                 /** checks if distance is with in radius of given city coordinates */
                 return distance <= radius;
             });
-        }).filter(val => Object.keys(val).length > 0);
+            if (cbuFilteredUsers.length > 0) {
+                au = this.updateDistanceInUser(au, cbuFilteredUsers[0].distance, city);
+            }
+            return cbuFilteredUsers.length > 0;
+        });
+    };
+
+    updateDistanceInUser = (user, distance, city) => {
+        var o = Object.assign({}, user);
+        o.distance = `${distance} miles from ${city}`;
+        user = Object.assign(user, o);
+        return user;
     };
     /**
      * To check and update other user related imnformation for FUTURE USE
