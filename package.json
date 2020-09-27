@@ -6,10 +6,10 @@
   "main": "./src/main/app.js",
   "scripts": {
     "test": "mocha ./src/test/*-test.js",
-    "start": "node ./src/main/app.js"
+    "start": "chmod +x serverStartUp.sh && ./serverStartUp.sh"
   },
   "keywords": [],
-  "author": "Krishna KUnder",
+  "author": "Krishna Kunderu",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",

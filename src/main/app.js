@@ -1,21 +1,14 @@
 import express from "express";
-import {
-  router as dwpRouter
-} from "./routes/routes.js";
-import {
-  router as swaggerRouter
-} from "./routes/swagger.js";
+import { router as dwpRouter } from "./routes/routes.js";
+import { router as swaggerRouter } from "./routes/swagger.js";
 import cors from "cors";
 import proxy from "http-proxy-middleware";
-const {
-  createProxyMiddleware
-} = proxy;
+const { createProxyMiddleware } = proxy;
 const port = process.env.PORT || 3000;
 let proxyPort = process.env.PROXYPORT || 5000;
 proxyPort = port === proxyPort ? parseInt(port) + 1 : proxyPort;
-console.log(proxyPort);
-console.log(port);
-
+console.log(`PROXY PORT: ${proxyPort}`);
+console.log(`PORT: ${port}`);
 
 export const app = express();
 export const proxyApp = express();
