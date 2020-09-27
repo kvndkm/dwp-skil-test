@@ -1,8 +1,48 @@
 import express from "express";
-import { router as dwpRouter } from "./routes/routes.js";
-import { router as swaggerRouter } from "./routes/swagger.js";
+import {
+  router as dwpRouter
+} from "./routes/routes.js";
+import {
+  router as swaggerRouter
+} from "./routes/swagger.js";
+import cors from "cors";
+import proxy from "http-proxy-middleware";
+const {
+  createProxyMiddleware
+} = proxy;
+const port = process.env.PORT || 3000;
+let proxyPort = process.env.PROXYPORT || 5000;
+proxyPort = port === proxyPort ? parseInt(port) + 1 : proxyPort;
+console.log(proxyPort);
+console.log(port);
+
 
 export const app = express();
+export const proxyApp = express();
+proxyApp.use(cors());
+proxyApp.use(
+  "/",
+  createProxyMiddleware({
+    target: `http://localhost:${port}/`, //original url
+    changeOrigin: true,
+    onProxyRes: function (proxyRes, req, res) {
+      proxyRes.headers["Access-Control-Allow-Origin"] = "*";
+    },
+  })
+);
+
+proxyApp.use(
+  "/api",
+  createProxyMiddleware({
+    target: `http://localhost:${port}/`, //original url
+    changeOrigin: true,
+    onProxyRes: function (proxyRes, req, res) {
+      proxyRes.headers["Access-Control-Allow-Origin"] = "*";
+      //return swaggerRouter(req, res);
+    },
+  })
+);
+
 /**
  * Based Route to the API end point which maps to the router specified
  * @param  {} "/"
@@ -79,9 +119,13 @@ function onListening() {
   console.log("\nListening on " + bind);
 }
 
-const port = process.env.PORT || 3000;
 app.listen(port);
+proxyApp.listen(proxyPort);
 app.on("error", onError);
 app.on("listening", onListening);
 
+proxyApp.on("error", onError);
+proxyApp.on("listening", onListening);
+
 console.log("Server started on port " + port);
+console.log("Proxy started on port " + proxyPort);

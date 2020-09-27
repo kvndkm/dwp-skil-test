@@ -12,8 +12,10 @@
   "author": "Krishna KUnder",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "geolib": "^3.3.1",
+    "http-proxy-middleware": "^1.0.5",
     "joi": "^17.2.1",
     "nodemon": "^2.0.4",
     "promise-request-retry": "^1.0.2",
