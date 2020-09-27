@@ -72,7 +72,6 @@ export default class UsersLocationService {
     o.distance = formattedDistance;
 
     user = Object.assign(user, o);
-    console.log(user);
     return user;
   };
   /**
